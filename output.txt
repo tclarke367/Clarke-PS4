@@ -1,0 +1,28 @@
+=======================================================
+Diabetes prevalence (% of adults ages 20-79)
+Most recent year with data, highest to lowest
+=======================================================
+1. Dominican Republic (2024): 17.6%
+2. Guyana (2024): 16.4%
+3. Belize (2024): 14.1%
+4. United States (2024): 13.7%
+5. Barbados (2024): 13.2%
+6. Jamaica (2024): 12.5%  <-- home
+7. Trinidad and Tobago (2024): 12.4%
+8. St. Lucia (2024): 11.4%
+9. Grenada (2024): 11.3%
+10. Puerto Rico (2024): 10.9%
+11. Cuba (2024): 9.4%
+12. Bahamas (2024): 8.9%
+13. Haiti (2024): 8.5%
+
+Caribbean average: 12.2% (12 countries)
+Jamaica: 12.5%
+Jamaica is 0.3 points ABOVE the Caribbean average
+United States: 13.7%
+
+Jamaica over time:
+  2011: 15.7%
+  2024: 12.5%
+
+Chart saved as diabetes_caribbean.png
