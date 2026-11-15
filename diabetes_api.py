@@ -11,12 +11,14 @@
 #   2. cleans up what comes back (there are a LOT of empty years)
 #   3. prints a ranked table for the newest year, compares Jamaica to the
 #      Caribbean average and the US, and shows how Jamaica changed over time
+#   4. makes a bar chart with Jamaica highlighted and saves it as a picture
 #
 # How to run:  python diabetes_api.py
-# Needs:       pip install requests
+# Needs:       pip install requests matplotlib
 # =============================================================================
 
 import requests                    # for talking to the API over the internet
+import matplotlib.pyplot as plt    # for making the bar chart
 
 # the World Bank's code for "Diabetes prevalence (% of population ages 20 to 79)"
 # (I found this by searching their indicator list for "diabetes")
@@ -26,6 +28,9 @@ INDICATOR = "SH.STA.DIAB.ZS"
 # Jamaica first because that's home, then other Caribbean islands, then the US
 COUNTRIES = ["JAM", "TTO", "BRB", "BHS", "HTI", "DOM", "CUB",
              "GUY", "BLZ", "PRI", "LCA", "GRD", "USA"]
+
+# name of the picture file the chart gets saved to
+CHART_FILE = "diabetes_caribbean.png"
 
 
 def get_diabetes_data(country_codes):
@@ -210,6 +215,51 @@ def print_summary(newest, cleaned):
         print("  " + str(year) + ": " + str(jamaica_years[year]) + "%")
 
 
+def make_chart(newest):
+    """
+    Makes a bar chart of the newest diabetes % for each country and saves it.
+    Jamaica is green and gold, the US is gray, and everyone else is blue.
+
+    Parameters
+    ----------
+    newest : list of tuple
+        The sorted list from get_newest_values().
+    """
+    names = []
+    percents = []
+    colors = []
+
+    for percent, country, year in newest:
+        names.append(country)
+        percents.append(percent)
+
+        # pick a color for each bar
+        if country == "Jamaica":
+            colors.append("#009B3A")   # Jamaican flag green
+        elif country == "United States":
+            colors.append("gray")
+        else:
+            colors.append("steelblue")
+
+    plt.figure(figsize=(10, 6))
+    bars = plt.bar(names, percents, color=colors)
+
+    # gold outline on Jamaica's bar so it really stands out (flag colors!)
+    for i in range(len(names)):
+        if names[i] == "Jamaica":
+            bars[i].set_edgecolor("#FED100")
+            bars[i].set_linewidth(3)
+
+    plt.title("Diabetes in Jamaica vs. the Caribbean and the US\n(% of adults ages 20-79, most recent year)")
+    plt.ylabel("Diabetes prevalence (%)")
+    plt.xticks(rotation=45, ha="right")   # tilt the names so they don't overlap
+    plt.tight_layout()                    # stops the labels from getting cut off
+
+    plt.savefig(CHART_FILE)
+    print()
+    print("Chart saved as " + CHART_FILE)
+
+
 # =============================================================================
 # Main: run everything in order
 # =============================================================================
@@ -229,3 +279,6 @@ if __name__ == "__main__":
         # step 3: find each country's newest value and print the summary
         newest = get_newest_values(cleaned)
         print_summary(newest, cleaned)
+
+        # step 4: make the chart
+        make_chart(newest)
